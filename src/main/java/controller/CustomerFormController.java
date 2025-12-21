@@ -5,9 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class CustomerFormController {
 
@@ -45,6 +43,14 @@ public class CustomerFormController {
             try {
                 Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade", "root", "root");
                 System.out.println(connection);
+
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM customer");
+
+                resultSet.next();
+
+                System.out.println(resultSet.getString(1));
+
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
