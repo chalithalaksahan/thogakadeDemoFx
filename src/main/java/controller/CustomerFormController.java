@@ -4,8 +4,10 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
+import model.Customer;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class CustomerFormController {
 
@@ -47,10 +49,19 @@ public class CustomerFormController {
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM customer");
 
-                resultSet.next();
+                ArrayList<Customer> customerArrayList = new ArrayList<>();
 
-                System.out.println(resultSet.getString(1));
-
+                while(resultSet.next()) {
+                   customerArrayList.add(
+                           new Customer(
+                                   resultSet.getString(1),
+                                   resultSet.getString(2),
+                                   resultSet.getString(3),
+                                   resultSet.getDouble(4)
+                           )
+                   );
+                }
+                System.out.println(customerArrayList);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
