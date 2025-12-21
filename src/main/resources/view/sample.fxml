@@ -10,7 +10,8 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane fx:controller="controller.CustomerFormController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
       <JFXTextField fx:id="txtId" layoutX="32.0" layoutY="88.0" prefHeight="26.0" prefWidth="112.0" promptText="id" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="66.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="600.0" />
       <Label alignment="CENTER" layoutX="184.0" layoutY="14.0" prefHeight="38.0" prefWidth="232.0" text="Customer Form" textFill="#dcd7d7">
@@ -19,7 +20,7 @@
          </font>
       </Label>
       <JFXTextField fx:id="txtSalary" layoutX="467.0" layoutY="88.0" prefHeight="26.0" prefWidth="112.0" promptText="salary" />
-      <JFXTextField fx:id="txtAddress" layoutX="319.0" layoutY="88.0" prefHeight="26.0" prefWidth="112.0" promptText="address" />
+      <JFXTextField fx:id="txtAddresss" layoutX="319.0" layoutY="88.0" prefHeight="26.0" prefWidth="112.0" promptText="address" />
       <JFXTextField fx:id="txtName" layoutX="176.0" layoutY="88.0" prefHeight="26.0" prefWidth="112.0" promptText="name" />
       <TableView fx:id="tblCustomer" layoutX="19.0" layoutY="189.0" prefHeight="199.0" prefWidth="566.0">
         <columns>
@@ -39,4 +40,5 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </JFXButton>
+   </children>
 </AnchorPane>

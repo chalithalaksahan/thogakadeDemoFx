@@ -1,9 +1,12 @@
 package controller;
 
 import com.jfoenix.controls.JFXTextField;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import model.Customer;
 
 import java.sql.*;
@@ -24,6 +27,9 @@ public class CustomerFormController {
         private TableColumn colSalary;
 
         @FXML
+        private TableView tblCustomer;
+
+        @FXML
         private JFXTextField txtAddress;
 
         @FXML
@@ -42,6 +48,11 @@ public class CustomerFormController {
 
         @FXML
         void btnLoadCustomerOnAction(ActionEvent event) {
+            colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+            colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+            colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+            colSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+
             try {
                 Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade", "root", "root");
                 System.out.println(connection);
@@ -62,6 +73,9 @@ public class CustomerFormController {
                    );
                 }
                 System.out.println(customerArrayList);
+
+                tblCustomer.setItems(FXCollections.observableArrayList(customerArrayList));
+
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
