@@ -12,6 +12,6 @@ public class Starter extends Application {
     public void start(Stage stage) throws Exception {
         stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("view/customer_form.fxml"))));
         stage.show();
-        stage.setTitle("chalitha");
+
     }
 }

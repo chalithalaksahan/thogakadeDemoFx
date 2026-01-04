@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -9,34 +11,57 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane fx:controller="controller.CustomerFormController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
-      <JFXTextField fx:id="txtId" layoutX="32.0" layoutY="88.0" prefHeight="26.0" prefWidth="112.0" promptText="id" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="66.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="600.0" />
-      <Label alignment="CENTER" layoutX="184.0" layoutY="14.0" prefHeight="38.0" prefWidth="232.0" text="Customer Form" textFill="#dcd7d7">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="836.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CustomerFormController">
+      <JFXTextField fx:id="txtId" layoutX="32.0" layoutY="89.0" prefHeight="26.0" prefWidth="146.0" promptText="ID" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#192a56" height="66.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="836.0" />
+      <Label alignment="CENTER" layoutX="302.0" layoutY="14.0" prefHeight="38.0" prefWidth="232.0" text="Customer Form" textFill="#fff0f0">
          <font>
             <Font name="Arial Black" size="24.0" />
          </font>
       </Label>
-      <JFXTextField fx:id="txtSalary" layoutX="467.0" layoutY="88.0" prefHeight="26.0" prefWidth="112.0" promptText="salary" />
-      <JFXTextField fx:id="txtAddress" layoutX="319.0" layoutY="88.0" prefHeight="26.0" prefWidth="112.0" promptText="address" />
-      <JFXTextField fx:id="txtName" layoutX="176.0" layoutY="88.0" prefHeight="26.0" prefWidth="112.0" promptText="name" />
-      <TableView fx:id="tblCustomer" layoutX="19.0" layoutY="189.0" prefHeight="199.0" prefWidth="566.0">
+      <JFXTextField fx:id="txtSalary" layoutX="32.0" layoutY="147.0" prefHeight="26.0" prefWidth="146.0" promptText="Salary" />
+      <JFXTextField fx:id="txtAddress" layoutX="236.0" layoutY="147.0" prefHeight="26.0" prefWidth="146.0" promptText="Address">
+      <font>
+         <Font name="0KDOLU" size="12.0" />
+      </font></JFXTextField>
+      <JFXTextField fx:id="txtName" layoutX="428.0" layoutY="89.0" prefHeight="26.0" prefWidth="168.0" promptText="Name" />
+      <TableView fx:id="tblCustomer" layoutX="21.0" layoutY="274.0" prefHeight="235.0" prefWidth="794.0" styleClass="textPane" stylesheets="@../CSS/style.css">
         <columns>
-          <TableColumn fx:id="colId" prefWidth="106.4000244140625" text="id" />
-          <TableColumn fx:id="colName" prefWidth="148.79998779296875" text="name" />
-            <TableColumn fx:id="colAddress" prefWidth="156.0" text="address" />
-            <TableColumn fx:id="colSalary" prefWidth="134.4000244140625" text="salary" />
+          <TableColumn fx:id="colId" prefWidth="77.0" text="ID" />
+          <TableColumn fx:id="colName" prefWidth="100.0" text="Name" />
+            <TableColumn fx:id="colDob" prefWidth="101.0" text="DOB" />
+            <TableColumn fx:id="colSalary" prefWidth="96.0" text="Salary" />
+         <TableColumn fx:id="colAddress" prefWidth="109.0" text="Address" />
+         <TableColumn fx:id="colCity" prefWidth="107.0" text="City" />
+         <TableColumn fx:id="colProvince" prefWidth="108.0" text="Province" />
+         <TableColumn fx:id="colPostalCode" prefWidth="108.0" text="Postal code" />
         </columns>
       </TableView>
-      <JFXButton layoutX="456.0" layoutY="137.0" onAction="#btnAddCustomerOnAction" prefHeight="37.0" prefWidth="129.0" style="-fx-background-color: #27ae60;" text="Add customer" textFill="WHITE">
+      <JFXButton layoutX="684.0" layoutY="222.0" onAction="#btnAddCustomerOnAction" prefHeight="37.0" prefWidth="129.0" style="-fx-background-color: #27ae60;" text="Add customer" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="16.0" />
+         </font>
+      </JFXButton>
+      <JFXButton layoutX="523.0" layoutY="222.0" onAction="#btnLoadCustomerOnAction" prefHeight="38.0" prefWidth="145.0" style="-fx-background-color: #f39c12;" text="Load Customer" textFill="WHITE">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </JFXButton>
-      <JFXButton layoutX="295.0" layoutY="137.0" onAction="#btnLoadCustomerOnAction" prefHeight="38.0" prefWidth="145.0" style="-fx-background-color: #27ae60;" text="Load Customer" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="16.0" />
-         </font>
-      </JFXButton>
+   <DatePicker fx:id="dateDob" layoutX="636.0" layoutY="90.0" prefHeight="25.0" prefWidth="168.0" promptText="DOB" />
+   <JFXComboBox fx:id="cmbTitle" layoutX="236.0" layoutY="90.0" prefHeight="25.0" prefWidth="146.0" promptText="Title" />
+   <JFXTextField fx:id="txtCity" layoutX="428.0" layoutY="147.0" prefHeight="26.0" prefWidth="168.0" promptText="City">
+      <font>
+         <Font name="0KDOLU" size="12.0" />
+      </font>
+   </JFXTextField>
+   <JFXTextField fx:id="txtProvince" layoutX="636.0" layoutY="147.0" prefHeight="26.0" prefWidth="146.0" promptText="Province">
+      <font>
+         <Font name="0KDOLU" size="12.0" />
+      </font>
+   </JFXTextField>
+   <JFXTextField fx:id="txtPostalCode" layoutX="32.0" layoutY="209.0" prefHeight="26.0" prefWidth="146.0" promptText="Postal code">
+      <font>
+         <Font name="0KDOLU" size="12.0" />
+      </font>
+   </JFXTextField>
 </AnchorPane>
