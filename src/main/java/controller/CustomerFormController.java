@@ -6,15 +6,18 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import tm.CustomerTM;
+import Model.Customer;
 
 import java.net.URL;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class CustomerFormController implements Initializable {
@@ -74,24 +77,60 @@ public class CustomerFormController implements Initializable {
     private JFXTextField txtSalary;
 
     @FXML
-    void btnAddCustomerOnAction(ActionEvent event) {
-        // TODO document why this method is empty
+    void btnAddCustomerOnAction(ActionEvent event) throws SQLException {
+        String id = txtId.getText();
+        String name = txtName.getText();
+        String title = cmbTitle.getValue().toString();
+        LocalDate dob = dateDob.getValue();
+        Double salary = Double.parseDouble(txtSalary.getText());
+        String address = txtAddress.getText();
+        String city = txtCity.getText();
+        String province = txtProvince.getText();
+        String postalCode = txtPostalCode.getText();
+
+        Customer customer = new Customer(id,title, name, dob, salary, address, city, province, postalCode);
+        System.out.println(customer);
+
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade","root","root");
+
+            PreparedStatement psTm = connection.prepareStatement("INSERT INTO customer VALUES(?,?,?,?,?,?,?,?,?)");
+
+            psTm.setString(1,customer.getId());
+            psTm.setString(2,customer.getTitle());
+            psTm.setString(3,customer.getName());
+            psTm.setObject(4,customer.getDob());
+            psTm.setDouble(5,customer.getSalary());
+            psTm.setString(6,customer.getAddress());
+            psTm.setString(7,customer.getCity());
+            psTm.setString(8,customer.getProvince());
+            psTm.setString(9,customer.getPostalCode());
+
+            if (psTm.executeUpdate()>0){
+                new Alert(Alert.AlertType.INFORMATION,"Customer Added!").show();
+                loadTable();
+            }else{
+                new Alert(Alert.AlertType.ERROR,"Customer Not Added!").show();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
     void btnLoadCustomerOnAction(ActionEvent event) {
         loadTable();
     }
-
     public void loadTable(){
-            colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-            colName.setCellValueFactory(new PropertyValueFactory<>("name"));
-            colDob.setCellValueFactory(new PropertyValueFactory<>("dob"));
-            colSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
-            colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
-            colCity.setCellValueFactory(new PropertyValueFactory<>("city"));
-            colProvince.setCellValueFactory(new PropertyValueFactory<>("province"));
-            colPostalCode.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("fullName"));
+        colDob.setCellValueFactory(new PropertyValueFactory<>("dob"));
+        colSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+        colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        colCity.setCellValueFactory(new PropertyValueFactory<>("city"));
+        colProvince.setCellValueFactory(new PropertyValueFactory<>("province"));
+        colPostalCode.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
 
 
 
@@ -103,21 +142,21 @@ public class CustomerFormController implements Initializable {
 
             ResultSet resultSet = statement.executeQuery("SELECT * FROM Customer");
 
-            ArrayList<CustomerTM> customerTMS = new ArrayList<>();
+            ArrayList<Customer> customerTMS = new ArrayList<>();
 
             while (resultSet.next()){
                 customerTMS.add(
-                    new CustomerTM(
-                        resultSet.getString(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getDate(4),
-                        resultSet.getString(5),
-                        resultSet.getString(6),
-                        resultSet.getString(7),
-                        resultSet.getString(8),
-                        resultSet.getDouble(9)
-                    )
+                        new Customer(
+                                resultSet.getString(1),
+                                resultSet.getString(2),
+                                resultSet.getString(3),
+                                resultSet.getDate(4).toLocalDate(),
+                                resultSet.getDouble(5),
+                                resultSet.getString(6),
+                                resultSet.getString(7),
+                                resultSet.getString(8),
+                                resultSet.getString(9)
+                        )
                 );
             }
 
@@ -128,9 +167,70 @@ public class CustomerFormController implements Initializable {
         }
 
     }
+    @FXML
+    public void btnUpdateOnAction(ActionEvent event) {
+
+    }
+    @FXML
+    public void btnDeleteOnAction(ActionEvent actionEvent) {
+    }
+    @FXML
+    public void btnSearchOnAction(ActionEvent actionEvent) {
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade", "root", "root");
+
+            PreparedStatement psTm = connection.prepareStatement("SELECT * FROM customer WHERE CustID = ?");
+
+            psTm.setString(1,txtId.getText());
+            ResultSet resultSet = psTm.executeQuery();
+
+            resultSet.next();
+
+
+            Customer customer = new Customer(
+                    resultSet.getString(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getDate(4).toLocalDate(),
+                    resultSet.getDouble(5),
+                    resultSet.getString(6),
+                    resultSet.getString(7),
+                    resultSet.getString(8),
+                    resultSet.getString(9)
+            );
+
+
+           setTextToValues(customer);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setTextToValues(Customer customer){
+        txtId.setText(customer.getId());
+        cmbTitle.setValue(customer.getTitle());
+        txtName.setText(customer.getName());
+        dateDob.setValue(customer.getDob());
+        txtSalary.setText(customer.getSalary().toString());
+        txtAddress.setText(customer.getAddress());
+        txtCity.setText(customer.getCity());
+        txtProvince.setText(customer.getProvince());
+        txtPostalCode.setText(customer.getPostalCode());
+
+    }
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        cmbTitle.setItems(
+                FXCollections.observableArrayList(
+                        Arrays.asList("Mr","Miss","Ms")
+                )
+        );
         loadTable();
     }
+
+
 }
