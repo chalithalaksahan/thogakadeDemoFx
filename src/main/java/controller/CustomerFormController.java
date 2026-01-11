@@ -2,6 +2,7 @@ package controller;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import db.DBConnection;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,7 +12,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import Model.Customer;
+import model.Customer;
 
 import java.net.URL;
 import java.sql.*;
@@ -91,10 +92,9 @@ public class CustomerFormController implements Initializable {
         Customer customer = new Customer(id,title, name, dob, salary, address, city, province, postalCode);
         System.out.println(customer);
 
-        try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade","root","root");
+        Connection connection = DBConnection.getInstance().getConnection();
 
-            PreparedStatement psTm = connection.prepareStatement("INSERT INTO customer VALUES(?,?,?,?,?,?,?,?,?)");
+        PreparedStatement psTm = connection.prepareStatement("INSERT INTO customer VALUES(?,?,?,?,?,?,?,?,?)");
 
             psTm.setString(1,customer.getId());
             psTm.setString(2,customer.getTitle());
@@ -113,9 +113,6 @@ public class CustomerFormController implements Initializable {
                 new Alert(Alert.AlertType.ERROR,"Customer Not Added!").show();
             }
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @FXML
@@ -135,7 +132,7 @@ public class CustomerFormController implements Initializable {
 
 
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade", "root", "root");
+            Connection connection = DBConnection.getInstance().getConnection();
             System.out.println(connection);
 
             Statement statement = connection.createStatement();
@@ -173,11 +170,28 @@ public class CustomerFormController implements Initializable {
     }
     @FXML
     public void btnDeleteOnAction(ActionEvent actionEvent) {
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+
+            PreparedStatement psTm = connection.prepareStatement("DELETE FROM customer WHERE CustID = ?");
+            psTm.setString(1,txtId.getText());
+
+            if(psTm.executeUpdate()>0){
+
+              new Alert(Alert.AlertType.INFORMATION,"Customer Deleted!").show();
+              loadTable();
+            }else {
+                new Alert(Alert.AlertType.WARNING, "Customer not found!").show();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
     @FXML
     public void btnSearchOnAction(ActionEvent actionEvent) {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade", "root", "root");
+            Connection connection = DBConnection.getInstance().getConnection();
 
             PreparedStatement psTm = connection.prepareStatement("SELECT * FROM customer WHERE CustID = ?");
 
