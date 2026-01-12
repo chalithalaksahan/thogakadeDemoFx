@@ -69,7 +69,12 @@
          <Font name="System Bold" size="16.0" />
       </font>
    </JFXButton>
-   <JFXButton layoutX="385.0" layoutY="222.0" onAction="#btnSearchOnAction" prefHeight="38.0" prefWidth="86.0" style="-fx-background-color: #2980b9;" text="Search" textFill="WHITE">
+   <JFXButton layoutX="288.0" layoutY="222.0" onAction="#btnSearchOnAction" prefHeight="38.0" prefWidth="86.0" style="-fx-background-color: #2980b9;" text="Search" textFill="WHITE">
+      <font>
+         <Font name="System Bold" size="16.0" />
+      </font>
+   </JFXButton>
+   <JFXButton layoutX="385.0" layoutY="222.0" onAction="#btnUpdateOnAction" prefHeight="38.0" prefWidth="86.0" style="-fx-background-color: #f1c40f;" text="Update" textFill="WHITE">
       <font>
          <Font name="System Bold" size="16.0" />
       </font>

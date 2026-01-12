@@ -166,7 +166,13 @@ public class CustomerFormController implements Initializable {
     }
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
 
+            PreparedStatement psTm = connection.prepareStatement("update customer SET CustID =?,CustTitle=?,CustName=?,DOB=?,salary=?,CustAddress=?,City=?,Province=?,PostalCode=? WHERE CustID =?");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
     @FXML
     public void btnDeleteOnAction(ActionEvent actionEvent) {

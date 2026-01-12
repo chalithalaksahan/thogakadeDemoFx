@@ -11,15 +11,15 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @ToString
 public class Customer {
-    String id;
-    String title;
-    String name;
-    LocalDate dob;
-    Double salary;
-    String address;
-    String city;
-    String province;
-    String postalCode;
+    private String id;
+    private String title;
+    private String name;
+    private LocalDate dob;
+    private Double salary;
+    private String address;
+    private String city;
+    private String province;
+    private String postalCode;
 
     public String getFullName(){
         return title +" "+ name;
