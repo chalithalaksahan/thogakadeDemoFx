@@ -170,6 +170,26 @@ public class CustomerFormController implements Initializable {
             Connection connection = DBConnection.getInstance().getConnection();
 
             PreparedStatement psTm = connection.prepareStatement("update customer SET CustID =?,CustTitle=?,CustName=?,DOB=?,salary=?,CustAddress=?,City=?,Province=?,PostalCode=? WHERE CustID =?");
+            psTm.setString(1,txtId.getText());
+            psTm.setString(2,(String) cmbTitle.getValue());
+            psTm.setString(3,txtName.getText());
+            psTm.setString(4, String.valueOf(dateDob.getValue()));
+            psTm.setDouble(5,Double.parseDouble(txtSalary.getText()));
+            psTm.setString(6,txtAddress.getText());
+            psTm.setString(7,txtCity.getText());
+            psTm.setString(8,txtProvince.getText());
+            psTm.setString(9,txtPostalCode.getText());
+            psTm.setString(10,txtId.getText());
+
+
+            if (psTm.executeUpdate()>0){
+                new Alert(Alert.AlertType.INFORMATION,"Customer Update Success!").show();
+                loadTable();
+            }else {
+                new Alert(Alert.AlertType.ERROR,"Customer Not Update").show();
+            }
+
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -239,6 +259,7 @@ public class CustomerFormController implements Initializable {
         txtPostalCode.setText(customer.getPostalCode());
 
     }
+
 
 
 
