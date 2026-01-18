@@ -1,7 +1,6 @@
 package controller.item;
 
 import com.jfoenix.controls.JFXTextField;
-import db.DBConnection;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,12 +9,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import model.Customer;
 import model.Item;
 import model.tm.ItemTM;
 
 import java.net.URL;
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -56,7 +53,7 @@ public class ItemFormController implements Initializable {
     private JFXTextField txtUnitPrice;
 
     @FXML
-    void btnAddItemOnAction(ActionEvent event) throws SQLException {
+    void btnAddItemOnAction(ActionEvent event){
         String code = txtItemCode.getText();
         String description = txtDescription.getText();
         String packSize = txtPackSize.getText();
@@ -64,7 +61,6 @@ public class ItemFormController implements Initializable {
         int qtyOnHand = Integer.parseInt(txtQtyOnHand.getText());
 
         Item item = new Item(code, description, packSize, unitPrice, qtyOnHand);
-        System.out.println(item);
 
         ItemServiceImpl itemService = new ItemServiceImpl();
 
@@ -101,15 +97,14 @@ public class ItemFormController implements Initializable {
         List<Item> all = itemService.getAll();
 
         ArrayList<ItemTM> itemTMArrayList = new ArrayList<>();
-        all.forEach(item -> {
+        all.forEach(item ->
             itemTMArrayList.add(new ItemTM(
                     item.getCode(),
                     item.getDescription(),
                     item.getPackSize(),
                     item.getUnitPrice(),
                     item.getQtyOnHand()
-            ));
-        });
+            )));
 
         tblItem.setItems(FXCollections.observableArrayList(itemTMArrayList));
 
@@ -159,7 +154,6 @@ public class ItemFormController implements Initializable {
         int qtyOnHand = Integer.parseInt(txtQtyOnHand.getText());
 
         Item item = new Item(code, description, packSize, unitPrice, qtyOnHand);
-        System.out.println(item);
 
         if (new ItemServiceImpl().updateItem(item)){
                 new Alert(Alert.AlertType.INFORMATION,"Item Updated Successfully").show();
@@ -184,7 +178,6 @@ public class ItemFormController implements Initializable {
 
         tblItem.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) ->{
 
-            System.out.println("New Value : "+newValue);
 
             if (newValue != null) {  // ✓ Proper null check
                 setTextToValues((ItemTM)newValue);
