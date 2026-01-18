@@ -11,10 +11,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Item;
+import model.tm.ItemTM;
 
 import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ItemFormController implements Initializable {
@@ -110,37 +112,22 @@ public class ItemFormController implements Initializable {
         loadItems();
     }
     public void loadItems()  {
-        colItemCode.setCellValueFactory(new PropertyValueFactory<>("code"));
-        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
-        colPackSize.setCellValueFactory(new PropertyValueFactory<>("packSize"));
-        colUnitePrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
-        colQtyOnHand.setCellValueFactory(new PropertyValueFactory<>("qtyOnHand"));
 
-        try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            Statement statement = connection.createStatement();
+        ItemServiceImpl itemService = new ItemServiceImpl();
+        List<Item> all = itemService.getAll();
 
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM Item");
+        ArrayList<ItemTM> itemTMArrayList = new ArrayList<>();
+        all.forEach(item -> {
+            itemTMArrayList.add(new ItemTM(
+                    item.getCode(),
+                    item.getDescription(),
+                    item.getPackSize(),
+                    item.getUnitPrice(),
+                    item.getQtyOnHand()
+            ));
+        });
 
-            ArrayList<Item> itemTMS = new ArrayList<>();
-
-            while (resultSet.next()){
-                itemTMS.add(
-                        new Item(
-                                resultSet.getString(1),
-                                resultSet.getString(2),
-                                resultSet.getString(3),
-                                resultSet.getDouble(4),
-                                resultSet.getInt(5)
-                        )
-                );
-            }
-            tblItem.setItems(FXCollections.observableArrayList(itemTMS));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-
+        tblItem.setItems(FXCollections.observableArrayList(itemTMArrayList));
 
     }
 
@@ -155,14 +142,14 @@ public class ItemFormController implements Initializable {
 
             resultSet.next();
 
-            Item item = new Item(
+            ItemTM itemTM = new ItemTM(
                     resultSet.getString(1),
                     resultSet.getString(2),
                     resultSet.getString(3),
                     resultSet.getDouble(4),
                     resultSet.getInt(5)
             );
-            setTextToValues(item);
+            setTextToValues(itemTM);
 
 
 
@@ -171,7 +158,7 @@ public class ItemFormController implements Initializable {
         }
 
     }
-    public void setTextToValues(Item item) {
+    public void setTextToValues(ItemTM item) {
         txtItemCode.setText(item.getCode());
         txtDescription.setText(item.getDescription());
         txtPackSize.setText(item.getPackSize());
@@ -214,14 +201,22 @@ public class ItemFormController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadItems();
 
-        tblItem.getSelectionModel().selectedItemProperty().addListener(((observableValue, oldValue, newValue) ->{
+        colItemCode.setCellValueFactory(new PropertyValueFactory<>("code"));
+        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        colPackSize.setCellValueFactory(new PropertyValueFactory<>("packSize"));
+        colUnitePrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+        colQtyOnHand.setCellValueFactory(new PropertyValueFactory<>("qtyOnHand"));
+
+
+
+        tblItem.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) ->{
 
             System.out.println("New Value : "+newValue);
 
         assert newValue != null;
 
-        setTextToValues((Item)newValue);
-        }));
+        setTextToValues((ItemTM)newValue);
+        });
 
 
     }
