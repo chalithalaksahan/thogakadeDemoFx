@@ -109,6 +109,7 @@ public class CustomerFormController implements Initializable {
             if (psTm.executeUpdate()>0){
                 new Alert(Alert.AlertType.INFORMATION,"Customer Added!").show();
                 loadTable();
+                clearFields();
             }else{
                 new Alert(Alert.AlertType.ERROR,"Customer Not Added!").show();
             }
@@ -185,6 +186,7 @@ public class CustomerFormController implements Initializable {
             if (psTm.executeUpdate()>0){
                 new Alert(Alert.AlertType.INFORMATION,"Customer Update Success!").show();
                 loadTable();
+                clearFields();
             }else {
                 new Alert(Alert.AlertType.ERROR,"Customer Not Update").show();
             }
@@ -206,6 +208,7 @@ public class CustomerFormController implements Initializable {
 
               new Alert(Alert.AlertType.INFORMATION,"Customer Deleted!").show();
               loadTable();
+              clearFields();
             }else {
                 new Alert(Alert.AlertType.WARNING, "Customer not found!").show();
             }
@@ -260,7 +263,17 @@ public class CustomerFormController implements Initializable {
 
     }
 
-
+    public void clearFields(){
+        txtId.setText("");
+        cmbTitle.setValue(null);
+        txtName.setText("");
+        dateDob.setValue(null);
+        txtSalary.setText("");
+        txtAddress.setText("");
+        txtCity.setText("");
+        txtProvince.setText("");
+        txtPostalCode.setText("");
+    }
 
 
     @Override
