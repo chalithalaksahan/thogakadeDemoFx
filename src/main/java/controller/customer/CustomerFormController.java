@@ -1,4 +1,4 @@
-package controller;
+package controller.customer;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -92,27 +92,13 @@ public class CustomerFormController implements Initializable {
         Customer customer = new Customer(id,title, name, dob, salary, address, city, province, postalCode);
         System.out.println(customer);
 
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        PreparedStatement psTm = connection.prepareStatement("INSERT INTO customer VALUES(?,?,?,?,?,?,?,?,?)");
-
-            psTm.setString(1,customer.getId());
-            psTm.setString(2,customer.getTitle());
-            psTm.setString(3,customer.getName());
-            psTm.setObject(4,customer.getDob());
-            psTm.setDouble(5,customer.getSalary());
-            psTm.setString(6,customer.getAddress());
-            psTm.setString(7,customer.getCity());
-            psTm.setString(8,customer.getProvince());
-            psTm.setString(9,customer.getPostalCode());
-
-            if (psTm.executeUpdate()>0){
-                new Alert(Alert.AlertType.INFORMATION,"Customer Added!").show();
-                loadTable();
-                clearFields();
-            }else{
-                new Alert(Alert.AlertType.ERROR,"Customer Not Added!").show();
-            }
+        if (new CustomerServiceImpl().addCustomer(customer)){
+            new Alert(Alert.AlertType.INFORMATION,"Customer Added!").show();
+            loadTable();
+            clearFields();
+        }else {
+            new Alert(Alert.AlertType.ERROR, "Customer Not Added!").show();
+        }
 
     }
 
