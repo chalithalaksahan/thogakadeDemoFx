@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DashboardController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#4bcffa" height="520.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="189.0" />
+      <JFXButton layoutX="28.0" layoutY="278.0" onMouseClicked="#btnCustomerFormOnActiom" prefHeight="38.0" prefWidth="134.0" style="-fx-background-color: #227093;" text="Customer Form" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </JFXButton>
+      <JFXButton layoutX="28.0" layoutY="326.0" onMouseClicked="#btnItemFormOnActiom" prefHeight="38.0" prefWidth="134.0" style="-fx-background-color: #227093;" text="Item Form" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </JFXButton>
+      <JFXButton layoutX="28.0" layoutY="376.0" onMouseClicked="#btnOrderFormOnActiom" prefHeight="38.0" prefWidth="134.0" style="-fx-background-color: #227093;" text="Order Form" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </JFXButton>
+      <AnchorPane fx:id="dashRoot" layoutX="189.0" prefHeight="520.0" prefWidth="836.0" />
+      <ImageView fitHeight="101.0" fitWidth="102.0" layoutX="46.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/logo.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="35.0" layoutY="164.0" text="Thogakade">
+         <font>
+            <Font name="Adobe Garamond LT Bold" size="27.0" />
+         </font>
+         <textFill>
+            <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="1.0" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.3552631437778473" green="0.021381579339504242" blue="0.021381579339504242" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Label>
+   </children>
+</AnchorPane>
