@@ -13,12 +13,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Customer;
+import model.tm.CustomerTM;
 
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class CustomerFormController implements Initializable {
@@ -78,7 +80,7 @@ public class CustomerFormController implements Initializable {
     private JFXTextField txtSalary;
 
     @FXML
-    void btnAddCustomerOnAction(ActionEvent event) throws SQLException {
+    void btnAddCustomerOnAction(ActionEvent event) {
         String id = txtId.getText();
         String name = txtName.getText();
         String title = cmbTitle.getValue().toString();
@@ -107,136 +109,88 @@ public class CustomerFormController implements Initializable {
         loadTable();
     }
     public void loadTable(){
-        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colName.setCellValueFactory(new PropertyValueFactory<>("fullName"));
-        colDob.setCellValueFactory(new PropertyValueFactory<>("dob"));
-        colSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
-        colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
-        colCity.setCellValueFactory(new PropertyValueFactory<>("city"));
-        colProvince.setCellValueFactory(new PropertyValueFactory<>("province"));
-        colPostalCode.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+        CustomerServiceImpl customerService = new CustomerServiceImpl();
+        List<Customer> all = customerService.getAll();
 
+        ArrayList<CustomerTM> customerTMS = new ArrayList<>();
 
-
-        try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            System.out.println(connection);
-
-            Statement statement = connection.createStatement();
-
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM Customer");
-
-            ArrayList<Customer> customerTMS = new ArrayList<>();
-
-            while (resultSet.next()){
-                customerTMS.add(
-                        new Customer(
-                                resultSet.getString(1),
-                                resultSet.getString(2),
-                                resultSet.getString(3),
-                                resultSet.getDate(4).toLocalDate(),
-                                resultSet.getDouble(5),
-                                resultSet.getString(6),
-                                resultSet.getString(7),
-                                resultSet.getString(8),
-                                resultSet.getString(9)
+        all.forEach(customer ->
+                customerTMS.add(new CustomerTM(
+                                customer.getId(),
+                                customer.getTitle(),
+                                customer.getName(),
+                                customer.getDob(),
+                                customer.getSalary(),
+                                customer.getAddress(),
+                                customer.getCity(),
+                                customer.getProvince(),
+                                customer.getPostalCode()
                         )
-                );
-            }
+                )
+        );
 
-            tblCustomer.setItems(FXCollections.observableArrayList(customerTMS));
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
+        tblCustomer.setItems(FXCollections.observableArrayList(customerTMS));
     }
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        try {
-            Connection connection = DBConnection.getInstance().getConnection();
 
-            PreparedStatement psTm = connection.prepareStatement("update customer SET CustID =?,CustTitle=?,CustName=?,DOB=?,salary=?,CustAddress=?,City=?,Province=?,PostalCode=? WHERE CustID =?");
-            psTm.setString(1,txtId.getText());
-            psTm.setString(2,(String) cmbTitle.getValue());
-            psTm.setString(3,txtName.getText());
-            psTm.setString(4, String.valueOf(dateDob.getValue()));
-            psTm.setDouble(5,Double.parseDouble(txtSalary.getText()));
-            psTm.setString(6,txtAddress.getText());
-            psTm.setString(7,txtCity.getText());
-            psTm.setString(8,txtProvince.getText());
-            psTm.setString(9,txtPostalCode.getText());
-            psTm.setString(10,txtId.getText());
+        CustomerServiceImpl customerService = new CustomerServiceImpl();
 
+        String title = (String) cmbTitle.getValue();
+        String name = txtName.getText();
+        String dob = String.valueOf(dateDob.getValue());
+        double salary = Double.parseDouble(txtSalary.getText());
+        String address = txtAddress.getText();
+        String city = txtCity.getText();
+        String province = txtProvince.getText();
+        String postalCode = txtPostalCode.getText();
+        String id = txtId.getText();
 
-            if (psTm.executeUpdate()>0){
-                new Alert(Alert.AlertType.INFORMATION,"Customer Update Success!").show();
-                loadTable();
-                clearFields();
-            }else {
-                new Alert(Alert.AlertType.ERROR,"Customer Not Update").show();
-            }
-
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        Customer customer = new Customer(id,title, name, LocalDate.parse(dob), salary, address, city, province, postalCode);
+        if (customerService.updateCustomer(customer)){
+            new Alert(Alert.AlertType.INFORMATION,"Customer Updated!").show();
+            loadTable();
+            clearFields();
+        }else {
+            new Alert(Alert.AlertType.ERROR, "Customer Not Updated!").show();
         }
+
+
     }
     @FXML
     public void btnDeleteOnAction(ActionEvent actionEvent) {
-        try {
-            Connection connection = DBConnection.getInstance().getConnection();
+        CustomerServiceImpl customerService = new CustomerServiceImpl();
 
-            PreparedStatement psTm = connection.prepareStatement("DELETE FROM customer WHERE CustID = ?");
-            psTm.setString(1,txtId.getText());
-
-            if(psTm.executeUpdate()>0){
-
-              new Alert(Alert.AlertType.INFORMATION,"Customer Deleted!").show();
-              loadTable();
-              clearFields();
-            }else {
-                new Alert(Alert.AlertType.WARNING, "Customer not found!").show();
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        if(customerService.deleteCustomer(txtId.getText())){
+            new Alert(Alert.AlertType.INFORMATION,"Customer Deleted!").show();
+            loadTable();
+            clearFields();
+        }else {
+            new Alert(Alert.AlertType.ERROR, "Customer not found!").show();
         }
     }
     @FXML
     public void btnSearchOnAction(ActionEvent actionEvent) {
-        try {
-            Connection connection = DBConnection.getInstance().getConnection();
+        CustomerServiceImpl customerService = new CustomerServiceImpl();
 
-            PreparedStatement psTm = connection.prepareStatement("SELECT * FROM customer WHERE CustID = ?");
+        Customer customer = customerService.searchCustomerById(txtId.getText());
 
-            psTm.setString(1,txtId.getText());
-            ResultSet resultSet = psTm.executeQuery();
+        CustomerTM customerTM = new CustomerTM(
+                customer.getId(),
+                customer.getTitle(),
+                customer.getName(),
+                customer.getDob(),
+                customer.getSalary(),
+                customer.getAddress(),
+                customer.getCity(),
+                customer.getProvince(),
+                customer.getPostalCode()
+        );
 
-            resultSet.next();
-
-
-            Customer customer = new Customer(
-                    resultSet.getString(1),
-                    resultSet.getString(2),
-                    resultSet.getString(3),
-                    resultSet.getDate(4).toLocalDate(),
-                    resultSet.getDouble(5),
-                    resultSet.getString(6),
-                    resultSet.getString(7),
-                    resultSet.getString(8),
-                    resultSet.getString(9)
-            );
-
-
-           setTextToValues(customer);
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        setTextToValues(customerTM);
     }
 
-    public void setTextToValues(Customer customer){
+    public void setTextToValues(CustomerTM customer){
         txtId.setText(customer.getId());
         cmbTitle.setValue(customer.getTitle());
         txtName.setText(customer.getName());
@@ -264,6 +218,15 @@ public class CustomerFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("fullName"));
+        colDob.setCellValueFactory(new PropertyValueFactory<>("dob"));
+        colSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+        colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        colCity.setCellValueFactory(new PropertyValueFactory<>("city"));
+        colProvince.setCellValueFactory(new PropertyValueFactory<>("province"));
+        colPostalCode.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+
         cmbTitle.setItems(
                 FXCollections.observableArrayList(
                         Arrays.asList("Mr","Miss","Ms")
@@ -274,7 +237,9 @@ public class CustomerFormController implements Initializable {
         tblCustomer.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
 
             if (newValue!= null) {
-                setTextToValues((Customer) newValue);
+                setTextToValues((CustomerTM) newValue);
+            } else {
+                clearFields();  // Optional: clear fields when nothing selected
             }
         });
     }
