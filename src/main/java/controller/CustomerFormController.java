@@ -284,6 +284,13 @@ public class CustomerFormController implements Initializable {
                 )
         );
         loadTable();
+
+        tblCustomer.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+
+            if (newValue!= null) {
+                setTextToValues((Customer) newValue);
+            }
+        });
     }
 
 

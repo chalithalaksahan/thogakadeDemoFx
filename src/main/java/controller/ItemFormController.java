@@ -213,5 +213,16 @@ public class ItemFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadItems();
+
+        tblItem.getSelectionModel().selectedItemProperty().addListener(((observableValue, oldValue, newValue) ->{
+
+            System.out.println("New Value : "+newValue);
+
+        assert newValue != null;
+
+        setTextToValues((Item)newValue);
+        }));
+
+
     }
 }
