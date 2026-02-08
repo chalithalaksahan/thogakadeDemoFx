@@ -13,6 +13,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Customer;
 import model.tm.CustomerTM;
+import service.custom.impl.CustomerServiceimpl;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -92,7 +93,7 @@ public class CustomerFormController implements Initializable {
         Customer customer = new Customer(id,title, name, dob, salary, address, city, province, postalCode);
         System.out.println(customer);
 
-        if (new CustomerServiceImpl().addCustomer(customer)){
+        if (new CustomerServiceimpl().addCustomer(customer)){
             new Alert(Alert.AlertType.INFORMATION,"Customer Added!").show();
             loadTable();
             clearFields();
@@ -107,7 +108,7 @@ public class CustomerFormController implements Initializable {
         loadTable();
     }
     public void loadTable(){
-        CustomerServiceImpl customerService = new CustomerServiceImpl();
+        CustomerServiceimpl customerService = new CustomerServiceimpl();
         List<Customer> all = customerService.getAll();
 
         ArrayList<CustomerTM> customerTMS = new ArrayList<>();
@@ -132,7 +133,7 @@ public class CustomerFormController implements Initializable {
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
 
-        CustomerServiceImpl customerService = new CustomerServiceImpl();
+        CustomerServiceimpl customerService = new CustomerServiceimpl();
 
         String title = (String) cmbTitle.getValue();
         String name = txtName.getText();
@@ -157,7 +158,7 @@ public class CustomerFormController implements Initializable {
     }
     @FXML
     public void btnDeleteOnAction(ActionEvent actionEvent) {
-        CustomerServiceImpl customerService = new CustomerServiceImpl();
+        CustomerServiceimpl customerService = new CustomerServiceimpl();
 
         if(customerService.deleteCustomer(txtId.getText())){
             new Alert(Alert.AlertType.INFORMATION,"Customer Deleted!").show();
@@ -169,7 +170,7 @@ public class CustomerFormController implements Initializable {
     }
     @FXML
     public void btnSearchOnAction(ActionEvent actionEvent) {
-        CustomerServiceImpl customerService = new CustomerServiceImpl();
+        CustomerServiceimpl customerService = new CustomerServiceimpl();
 
         Customer customer = customerService.searchCustomerById(txtId.getText());
 

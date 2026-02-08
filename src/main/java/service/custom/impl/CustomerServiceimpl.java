@@ -1,16 +1,15 @@
-package controller.customer;
+package service.custom.impl;
 
 import db.DBConnection;
-import javafx.collections.FXCollections;
-import javafx.scene.control.Alert;
 import model.Customer;
 import model.tm.CustomerTM;
+import service.custom.CustomerService;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerServiceImpl implements CustomerService {
+public class CustomerServiceimpl implements CustomerService {
     @Override
     public boolean addCustomer(Customer customer) {
 
@@ -134,20 +133,20 @@ public class CustomerServiceImpl implements CustomerService {
 
             while (resultSet.next()){
                 Customer customer = new Customer(
-                                resultSet.getString(1),
-                                resultSet.getString(2),
-                                resultSet.getString(3),
-                                resultSet.getDate(4).toLocalDate(),
-                                resultSet.getDouble(5),
-                                resultSet.getString(6),
-                                resultSet.getString(7),
-                                resultSet.getString(8),
-                                resultSet.getString(9)
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getDate(4).toLocalDate(),
+                        resultSet.getDouble(5),
+                        resultSet.getString(6),
+                        resultSet.getString(7),
+                        resultSet.getString(8),
+                        resultSet.getString(9)
 
                 );
                 customerTMS.add(customer);
             }
-           return customerTMS;
+            return customerTMS;
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
