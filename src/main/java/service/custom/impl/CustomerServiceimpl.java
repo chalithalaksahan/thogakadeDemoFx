@@ -3,36 +3,22 @@ package service.custom.impl;
 import db.DBConnection;
 import model.Customer;
 import model.tm.CustomerTM;
+import repository.RepositoryFactory;
+import repository.custom.CustomerRepository;
 import service.custom.CustomerService;
+import util.RepositoryType;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerServiceimpl implements CustomerService {
+    CustomerRepository customerRepository = RepositoryFactory.getInstance().getRepositoryType(RepositoryType.CUSTOMER);
+
     @Override
     public boolean addCustomer(Customer customer) {
 
-        try {
-            Connection connection = DBConnection.getInstance().getConnection();
-
-            PreparedStatement psTm = connection.prepareStatement("INSERT INTO customer VALUES(?,?,?,?,?,?,?,?,?)");
-
-            psTm.setString(1,customer.getId());
-            psTm.setString(2,customer.getTitle());
-            psTm.setString(3,customer.getName());
-            psTm.setObject(4,customer.getDob());
-            psTm.setDouble(5,customer.getSalary());
-            psTm.setString(6,customer.getAddress());
-            psTm.setString(7,customer.getCity());
-            psTm.setString(8,customer.getProvince());
-            psTm.setString(9,customer.getPostalCode());
-
-            return psTm.executeUpdate()>0;
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return customerRepository.create(customer);
 
     }
 

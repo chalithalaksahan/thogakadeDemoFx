@@ -13,7 +13,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Customer;
 import model.tm.CustomerTM;
+import service.ServiceFactory;
+import service.custom.CustomerService;
 import service.custom.impl.CustomerServiceimpl;
+import util.ServiceType;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -78,6 +81,9 @@ public class CustomerFormController implements Initializable {
     @FXML
     private JFXTextField txtSalary;
 
+
+    CustomerService servieType = ServiceFactory.getInstance().getServiceType(ServiceType.CUSTOMER);
+
     @FXML
     void btnAddCustomerOnAction(ActionEvent event) {
         String id = txtId.getText();
@@ -93,7 +99,7 @@ public class CustomerFormController implements Initializable {
         Customer customer = new Customer(id,title, name, dob, salary, address, city, province, postalCode);
         System.out.println(customer);
 
-        if (new CustomerServiceimpl().addCustomer(customer)){
+        if (servieType.addCustomer(customer)){
             new Alert(Alert.AlertType.INFORMATION,"Customer Added!").show();
             loadTable();
             clearFields();
@@ -108,8 +114,8 @@ public class CustomerFormController implements Initializable {
         loadTable();
     }
     public void loadTable(){
-        CustomerServiceimpl customerService = new CustomerServiceimpl();
-        List<Customer> all = customerService.getAll();
+
+        List<Customer> all = servieType.getAll();
 
         ArrayList<CustomerTM> customerTMS = new ArrayList<>();
 
@@ -133,8 +139,6 @@ public class CustomerFormController implements Initializable {
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
 
-        CustomerServiceimpl customerService = new CustomerServiceimpl();
-
         String title = (String) cmbTitle.getValue();
         String name = txtName.getText();
         String dob = String.valueOf(dateDob.getValue());
@@ -146,7 +150,7 @@ public class CustomerFormController implements Initializable {
         String id = txtId.getText();
 
         Customer customer = new Customer(id,title, name, LocalDate.parse(dob), salary, address, city, province, postalCode);
-        if (customerService.updateCustomer(customer)){
+        if (servieType.updateCustomer(customer)){
             new Alert(Alert.AlertType.INFORMATION,"Customer Updated!").show();
             loadTable();
             clearFields();
@@ -158,9 +162,8 @@ public class CustomerFormController implements Initializable {
     }
     @FXML
     public void btnDeleteOnAction(ActionEvent actionEvent) {
-        CustomerServiceimpl customerService = new CustomerServiceimpl();
 
-        if(customerService.deleteCustomer(txtId.getText())){
+        if(servieType.deleteCustomer(txtId.getText())){
             new Alert(Alert.AlertType.INFORMATION,"Customer Deleted!").show();
             loadTable();
             clearFields();
@@ -170,9 +173,8 @@ public class CustomerFormController implements Initializable {
     }
     @FXML
     public void btnSearchOnAction(ActionEvent actionEvent) {
-        CustomerServiceimpl customerService = new CustomerServiceimpl();
 
-        Customer customer = customerService.searchCustomerById(txtId.getText());
+        Customer customer = servieType.searchCustomerById(txtId.getText());
 
         CustomerTM customerTM = new CustomerTM(
                 customer.getId(),
