@@ -1,25 +1,20 @@
 package service.custom.impl;
 
-import db.DBConnection;
 import model.Customer;
-import model.tm.CustomerTM;
 import repository.RepositoryFactory;
 import repository.custom.CustomerRepository;
 import service.custom.CustomerService;
 import util.RepositoryType;
 
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerServiceimpl implements CustomerService {
+
     CustomerRepository customerRepository = RepositoryFactory.getInstance().getRepositoryType(RepositoryType.CUSTOMER);
 
     @Override
     public boolean addCustomer(Customer customer) {
-
         return customerRepository.create(customer);
-
     }
 
     @Override

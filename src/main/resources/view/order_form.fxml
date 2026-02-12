@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="520.0" prefWidth="836.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.order.OrderController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#192a56" height="66.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="836.0" />
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="302.0" layoutY="14.0" prefHeight="38.0" prefWidth="232.0" text="Order Form" textAlignment="CENTER" textFill="#fff0f0">
+         <font>
+            <Font name="Arial Black" size="24.0" />
+         </font>
+      </Label>
+      <TextField layoutX="58.0" layoutY="128.0" />
+      <Label fx:id="lblDate" layoutX="736.0" layoutY="14.0" text="yyyy-MM-dd" textFill="WHITE" />
+      <Label fx:id="lblTime" layoutX="748.0" layoutY="37.0" text="00:00:00" textFill="WHITE" />
+     
+   </children>
+</AnchorPane>
