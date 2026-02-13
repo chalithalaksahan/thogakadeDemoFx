@@ -15,7 +15,6 @@ import model.Customer;
 import model.tm.CustomerTM;
 import service.ServiceFactory;
 import service.custom.CustomerService;
-import service.custom.impl.CustomerServiceimpl;
 import util.ServiceType;
 
 import java.net.URL;
@@ -82,7 +81,7 @@ public class CustomerFormController implements Initializable {
     private JFXTextField txtSalary;
 
 
-    CustomerService servieType = ServiceFactory.getInstance().getServiceType(ServiceType.CUSTOMER);
+    CustomerService serviceType = ServiceFactory.getInstance().getServiceType(ServiceType.CUSTOMER);
 
     @FXML
     void btnAddCustomerOnAction(ActionEvent event) {
@@ -99,7 +98,7 @@ public class CustomerFormController implements Initializable {
         Customer customer = new Customer(id,title, name, dob, salary, address, city, province, postalCode);
         System.out.println(customer);
 
-        if (servieType.addCustomer(customer)){
+        if (serviceType.addCustomer(customer)){
             new Alert(Alert.AlertType.INFORMATION,"Customer Added!").show();
             loadTable();
             clearFields();
@@ -115,7 +114,7 @@ public class CustomerFormController implements Initializable {
     }
     public void loadTable(){
 
-        List<Customer> all = servieType.getAll();
+        List<Customer> all = serviceType.getAll();
 
         ArrayList<CustomerTM> customerTMS = new ArrayList<>();
 
@@ -150,7 +149,7 @@ public class CustomerFormController implements Initializable {
         String id = txtId.getText();
 
         Customer customer = new Customer(id,title, name, LocalDate.parse(dob), salary, address, city, province, postalCode);
-        if (servieType.updateCustomer(customer)){
+        if (serviceType.updateCustomer(customer)){
             new Alert(Alert.AlertType.INFORMATION,"Customer Updated!").show();
             loadTable();
             clearFields();
@@ -163,7 +162,7 @@ public class CustomerFormController implements Initializable {
     @FXML
     public void btnDeleteOnAction(ActionEvent actionEvent) {
 
-        if(servieType.deleteCustomer(txtId.getText())){
+        if(serviceType.deleteCustomer(txtId.getText())){
             new Alert(Alert.AlertType.INFORMATION,"Customer Deleted!").show();
             loadTable();
             clearFields();
@@ -174,7 +173,7 @@ public class CustomerFormController implements Initializable {
     @FXML
     public void btnSearchOnAction(ActionEvent actionEvent) {
 
-        Customer customer = servieType.searchCustomerById(txtId.getText());
+        Customer customer = serviceType.searchCustomerById(txtId.getText());
 
         CustomerTM customerTM = new CustomerTM(
                 customer.getId(),

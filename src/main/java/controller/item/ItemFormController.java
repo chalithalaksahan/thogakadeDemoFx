@@ -11,6 +11,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Item;
 import model.tm.ItemTM;
+import service.ServiceFactory;
+import service.custom.ItemService;
+import util.ServiceType;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -52,6 +55,9 @@ public class ItemFormController implements Initializable {
     @FXML
     private JFXTextField txtUnitPrice;
 
+    ItemService serviceType=ServiceFactory.getInstance().getServiceType(ServiceType.ITEM);
+
+
     @FXML
     void btnAddItemOnAction(ActionEvent event){
         String code = txtItemCode.getText();
@@ -62,10 +68,10 @@ public class ItemFormController implements Initializable {
 
         Item item = new Item(code, description, packSize, unitPrice, qtyOnHand);
 
-        ItemServiceImpl itemService = new ItemServiceImpl();
 
 
-        if ( itemService.addItem(item)){
+
+        if ( serviceType.addItem(item)){
             new Alert(Alert.AlertType.INFORMATION,"Item Added Successfully").show();
             loadItems();
         }else {
@@ -76,9 +82,9 @@ public class ItemFormController implements Initializable {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-       ItemServiceImpl itemService = new ItemServiceImpl();
 
-        if (itemService.deleteItem(txtItemCode.getText())){
+
+        if (serviceType.deleteItem(txtItemCode.getText())){
             new Alert(Alert.AlertType.INFORMATION,"Item Deleted Successfully").show();
             loadItems();
             clearFields();
@@ -93,8 +99,8 @@ public class ItemFormController implements Initializable {
     }
     public void loadItems()  {
 
-        ItemServiceImpl itemService = new ItemServiceImpl();
-        List<Item> all = itemService.getAll();
+
+        List<Item> all = serviceType.getAll();
 
         ArrayList<ItemTM> itemTMArrayList = new ArrayList<>();
         all.forEach(item ->
@@ -112,9 +118,9 @@ public class ItemFormController implements Initializable {
 
     @FXML
     void btnSearchOnAction(ActionEvent event) {
-        ItemServiceImpl itemService = new ItemServiceImpl();
 
-        Item item = itemService.searchById(txtItemCode.getText());
+
+        Item item = serviceType.searchItemById(txtItemCode.getText());
 
         ItemTM itemTM = new ItemTM(
                 item.getCode(),
@@ -155,7 +161,7 @@ public class ItemFormController implements Initializable {
 
         Item item = new Item(code, description, packSize, unitPrice, qtyOnHand);
 
-        if (new ItemServiceImpl().updateItem(item)){
+        if (serviceType.updateItem(item)){
                 new Alert(Alert.AlertType.INFORMATION,"Item Updated Successfully").show();
                 loadItems();
             }else {
