@@ -16,6 +16,7 @@ import service.custom.ItemService;
 import util.ServiceType;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -69,13 +70,15 @@ public class ItemFormController implements Initializable {
         Item item = new Item(code, description, packSize, unitPrice, stock);
 
 
-
-
-        if ( serviceType.addItem(item)){
-            new Alert(Alert.AlertType.INFORMATION,"Item Added Successfully").show();
-            loadItems();
-        }else {
-            new Alert(Alert.AlertType.WARNING,"Item Not Added").show();
+        try {
+            if ( serviceType.addItem(item)){
+                new Alert(Alert.AlertType.INFORMATION,"Item Added Successfully").show();
+                loadItems();
+            }else {
+                new Alert(Alert.AlertType.WARNING,"Item Not Added").show();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -100,19 +103,26 @@ public class ItemFormController implements Initializable {
     public void loadItems()  {
 
 
-        List<Item> all = serviceType.getAll();
+        try {
+            List<Item>   all = serviceType.getAllItems();
 
-        ArrayList<ItemTM> itemTMArrayList = new ArrayList<>();
-        all.forEach(item ->
-            itemTMArrayList.add(new ItemTM(
-                    item.getCode(),
-                    item.getDescription(),
-                    item.getPackSize(),
-                    item.getUnitPrice(),
-                    item.getStock()
-            )));
+            ArrayList<ItemTM> itemTMArrayList = new ArrayList<>();
+            all.forEach(item ->
+                    itemTMArrayList.add(new ItemTM(
+                            item.getCode(),
+                            item.getDescription(),
+                            item.getPackSize(),
+                            item.getUnitPrice(),
+                            item.getStock()
+                    )));
 
-        tblItem.setItems(FXCollections.observableArrayList(itemTMArrayList));
+            tblItem.setItems(FXCollections.observableArrayList(itemTMArrayList));
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
 
     }
 
@@ -120,17 +130,25 @@ public class ItemFormController implements Initializable {
     void btnSearchOnAction(ActionEvent event) {
 
 
-        Item item = serviceType.searchItemById(txtItemCode.getText());
 
-        ItemTM itemTM = new ItemTM(
-                item.getCode(),
-                item.getDescription(),
-                item.getPackSize(),
-                item.getUnitPrice(),
-                item.getStock()
-        );
+        try {
+            Item item = serviceType.getItemByCode(txtItemCode.getText());
 
-        setTextToValues(itemTM);
+            ItemTM itemTM = new ItemTM(
+                    item.getCode(),
+                    item.getDescription(),
+                    item.getPackSize(),
+                    item.getUnitPrice(),
+                    item.getStock()
+            );
+
+            setTextToValues(itemTM);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
 
 
     }

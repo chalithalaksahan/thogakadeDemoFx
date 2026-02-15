@@ -18,6 +18,7 @@ import service.custom.CustomerService;
 import util.ServiceType;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -114,26 +115,34 @@ public class CustomerFormController implements Initializable {
     }
     public void loadTable(){
 
-        List<Customer> all = serviceType.getAll();
 
-        ArrayList<CustomerTM> customerTMS = new ArrayList<>();
+        try {
+            List<Customer>  all = serviceType.getAll();
 
-        all.forEach(customer ->
-                customerTMS.add(new CustomerTM(
-                                customer.getId(),
-                                customer.getTitle(),
-                                customer.getName(),
-                                customer.getDob(),
-                                customer.getSalary(),
-                                customer.getAddress(),
-                                customer.getCity(),
-                                customer.getProvince(),
-                                customer.getPostalCode()
-                        )
-                )
-        );
+            ArrayList<CustomerTM> customerTMS = new ArrayList<>();
 
-        tblCustomer.setItems(FXCollections.observableArrayList(customerTMS));
+            all.forEach(customer ->
+                    customerTMS.add(new CustomerTM(
+                                    customer.getId(),
+                                    customer.getTitle(),
+                                    customer.getName(),
+                                    customer.getDob(),
+                                    customer.getSalary(),
+                                    customer.getAddress(),
+                                    customer.getCity(),
+                                    customer.getProvince(),
+                                    customer.getPostalCode()
+                            )
+                    )
+            );
+
+            tblCustomer.setItems(FXCollections.observableArrayList(customerTMS));
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
@@ -173,21 +182,27 @@ public class CustomerFormController implements Initializable {
     @FXML
     public void btnSearchOnAction(ActionEvent actionEvent) {
 
-        Customer customer = serviceType.searchCustomerById(txtId.getText());
+        try {
+            Customer customer = serviceType.searchCustomerById(txtId.getText());
 
-        CustomerTM customerTM = new CustomerTM(
-                customer.getId(),
-                customer.getTitle(),
-                customer.getName(),
-                customer.getDob(),
-                customer.getSalary(),
-                customer.getAddress(),
-                customer.getCity(),
-                customer.getProvince(),
-                customer.getPostalCode()
-        );
+            CustomerTM customerTM = new CustomerTM(
+                    customer.getId(),
+                    customer.getTitle(),
+                    customer.getName(),
+                    customer.getDob(),
+                    customer.getSalary(),
+                    customer.getAddress(),
+                    customer.getCity(),
+                    customer.getProvince(),
+                    customer.getPostalCode()
+            );
 
-        setTextToValues(customerTM);
+            setTextToValues(customerTM);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
     public void setTextToValues(CustomerTM customer){

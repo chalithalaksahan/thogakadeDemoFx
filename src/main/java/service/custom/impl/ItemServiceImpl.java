@@ -6,9 +6,11 @@ import repository.custom.ItemRepository;
 import service.custom.ItemService;
 import util.RepositoryType;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class ItemServiceImpl implements ItemService {
+
 
     ItemRepository itemRepository = RepositoryFactory.getInstance().getRepositoryType(RepositoryType.ITEM);
 
@@ -23,17 +25,23 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public boolean deleteItem(String id) {
-        return itemRepository.deleteById(id);
+    public boolean deleteItem(String item) {
+        return false;
     }
 
-    @Override
-    public Item searchItemById(String id) {
-        return itemRepository.getById(id);
-    }
 
     @Override
-    public List<Item> getAll() {
+    public List<Item> getAllItems() throws SQLException {
         return itemRepository.getAll();
+    }
+
+    @Override
+    public List<String> getItemCodes() throws SQLException {
+        return itemRepository.getItemCodes();
+    }
+
+    @Override
+    public Item getItemByCode(String code) throws SQLException {
+        return itemRepository.getById(code);
     }
 }
