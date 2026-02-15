@@ -14,6 +14,6 @@ public class Item {
     private String description;
     private String packSize;
     private double unitPrice;
-    private int qtyOnHand;
+    private Integer stock;
 
 }

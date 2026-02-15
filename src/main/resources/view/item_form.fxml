@@ -29,7 +29,7 @@
             <TableColumn fx:id="colDescription" prefWidth="284.0" text="Description" />
             <TableColumn fx:id="colPackSize" prefWidth="134.0" text="packSize" />
             <TableColumn fx:id="colUnitePrice" prefWidth="122.0" text="UnitPrice" />
-            <TableColumn fx:id="colQtyOnHand" prefWidth="147.0" text="QtyOnHand" />
+            <TableColumn fx:id="colStock" prefWidth="147.0" text="Stock" />
         </columns>
     </TableView>
   <JFXButton layoutX="684.0" layoutY="222.0" onAction="#btnAddItemOnAction" prefHeight="37.0" prefWidth="129.0" style="-fx-background-color: #27ae60;" text="Add Item" textFill="WHITE">

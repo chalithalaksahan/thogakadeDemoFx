@@ -19,7 +19,7 @@ public class ItemRepositoryImpl implements ItemRepository {
                     item.getDescription(),
                     item.getPackSize(),
                     item.getUnitPrice(),
-                    item.getQtyOnHand()
+                    item.getStock()
             );
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -29,11 +29,11 @@ public class ItemRepositoryImpl implements ItemRepository {
     @Override
     public boolean update(Item item) {
         try {
-           return CrudUtil.execute("UPDATE Item SET Description=?, PackSize=?, UnitPrice=?, QtyOnHand=? WHERE ItemCode=?",
+           return CrudUtil.execute("UPDATE Item SET Description=?, PackSize=?, UnitPrice=?, Stock=? WHERE ItemCode=?",
                     item.getDescription(),
                     item.getPackSize(),
                     item.getUnitPrice(),
-                    item.getQtyOnHand(),
+                    item.getStock(),
                     item.getCode()
             );
 

@@ -32,7 +32,7 @@ public class ItemFormController implements Initializable {
     private TableColumn colPackSize;
 
     @FXML
-    private TableColumn colQtyOnHand;
+    public TableColumn colStock;
 
     @FXML
     private TableColumn colUnitePrice;
@@ -64,9 +64,9 @@ public class ItemFormController implements Initializable {
         String description = txtDescription.getText();
         String packSize = txtPackSize.getText();
         double unitPrice = Double.parseDouble(txtUnitPrice.getText());
-        int qtyOnHand = Integer.parseInt(txtQtyOnHand.getText());
+        int stock = Integer.parseInt(txtQtyOnHand.getText());
 
-        Item item = new Item(code, description, packSize, unitPrice, qtyOnHand);
+        Item item = new Item(code, description, packSize, unitPrice, stock);
 
 
 
@@ -109,7 +109,7 @@ public class ItemFormController implements Initializable {
                     item.getDescription(),
                     item.getPackSize(),
                     item.getUnitPrice(),
-                    item.getQtyOnHand()
+                    item.getStock()
             )));
 
         tblItem.setItems(FXCollections.observableArrayList(itemTMArrayList));
@@ -127,7 +127,7 @@ public class ItemFormController implements Initializable {
                 item.getDescription(),
                 item.getPackSize(),
                 item.getUnitPrice(),
-                item.getQtyOnHand()
+                item.getStock()
         );
 
         setTextToValues(itemTM);
@@ -139,7 +139,7 @@ public class ItemFormController implements Initializable {
         txtDescription.setText(item.getDescription());
         txtPackSize.setText(item.getPackSize());
         txtUnitPrice.setText(String.valueOf(item.getUnitPrice()));
-        txtQtyOnHand.setText(String.valueOf(item.getQtyOnHand()));
+        txtQtyOnHand.setText(String.valueOf(item.getStock()));
     }
 
     public void clearFields(){
@@ -157,9 +157,9 @@ public class ItemFormController implements Initializable {
         String description = txtDescription.getText();
         String packSize = txtPackSize.getText();
         double unitPrice = Double.parseDouble(txtUnitPrice.getText());
-        int qtyOnHand = Integer.parseInt(txtQtyOnHand.getText());
+        int stock = Integer.parseInt(txtQtyOnHand.getText());
 
-        Item item = new Item(code, description, packSize, unitPrice, qtyOnHand);
+        Item item = new Item(code, description, packSize, unitPrice, stock);
 
         if (serviceType.updateItem(item)){
                 new Alert(Alert.AlertType.INFORMATION,"Item Updated Successfully").show();
@@ -178,7 +178,7 @@ public class ItemFormController implements Initializable {
         colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         colPackSize.setCellValueFactory(new PropertyValueFactory<>("packSize"));
         colUnitePrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
-        colQtyOnHand.setCellValueFactory(new PropertyValueFactory<>("qtyOnHand"));
+        colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
 
 
 
