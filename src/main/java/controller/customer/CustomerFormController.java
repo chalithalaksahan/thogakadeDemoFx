@@ -2,6 +2,7 @@ package controller.customer;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import db.DBConnection;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,10 +14,15 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Customer;
 import model.tm.CustomerTM;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import service.ServiceFactory;
 import service.custom.CustomerService;
 import util.ServiceType;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -260,4 +266,21 @@ public class CustomerFormController implements Initializable {
     }
 
 
+    public void btnExportOnAction(ActionEvent actionEvent) {
+        try {
+            InputStream stream = getClass().getResourceAsStream("/report/customer-report.jrxml");
+
+            if (stream == null) {
+                throw new RuntimeException("Report file not found! Check the path.");
+            }
+            JasperDesign design = JRXmlLoader.load(stream);
+            JasperReport jasperReport = JasperCompileManager.compileReport(design);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, DBConnection.getInstance().getConnection());
+            JasperExportManager.exportReportToPdfFile(jasperPrint,"customer-report.pdf");
+            JasperViewer.viewReport(jasperPrint,false);
+        } catch (JRException | SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }
