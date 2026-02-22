@@ -3,6 +3,7 @@ package controller.customer;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import db.DBConnection;
+import jakarta.inject.Inject;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -87,8 +88,9 @@ public class CustomerFormController implements Initializable {
     @FXML
     private JFXTextField txtSalary;
 
-
-    CustomerService serviceType = ServiceFactory.getInstance().getServiceType(ServiceType.CUSTOMER);
+    @Inject
+    CustomerService serviceType;
+   // CustomerService serviceType = ServiceFactory.getInstance().getServiceType(ServiceType.CUSTOMER);
 
     @FXML
     void btnAddCustomerOnAction(ActionEvent event) {

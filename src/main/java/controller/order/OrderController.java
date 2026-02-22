@@ -1,5 +1,6 @@
 package controller.order;
 
+import jakarta.inject.Inject;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
@@ -64,10 +65,19 @@ public class OrderController implements Initializable {
     @FXML
     private Label lblTime;
 
+@Inject
+CustomerService customerService;
 
-    CustomerService customerService = ServiceFactory.getInstance().getServiceType(ServiceType.CUSTOMER);
-    ItemService itemService = ServiceFactory.getInstance().getServiceType(ServiceType.ITEM);
-    OrderService orderService = ServiceFactory.getInstance().getServiceType(ServiceType.ORDER);
+@Inject
+ItemService itemService;
+
+@Inject
+OrderService orderService;
+
+//CustomerService customerService = ServiceFactory.getInstance().getServiceType(ServiceType.CUSTOMER);
+//    ItemService itemService = ServiceFactory.getInstance().getServiceType(ServiceType.ITEM);
+//    OrderService orderService = ServiceFactory.getInstance().getServiceType(ServiceType.ORDER);
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colCode.setCellValueFactory(new PropertyValueFactory<>("code"));

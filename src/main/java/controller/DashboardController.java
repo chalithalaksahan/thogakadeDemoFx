@@ -1,5 +1,8 @@
 package controller;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import config.AppModule;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,6 +19,9 @@ public class DashboardController implements Initializable {
     @FXML
     private AnchorPane dashRoot;
 
+    private Injector injector;
+
+
     @FXML
     void btnCustomerFormOnActiom(MouseEvent event) {
         try {
@@ -24,9 +30,10 @@ public class DashboardController implements Initializable {
 
         assert resource != null;
 
-        Parent parent = null;
+        FXMLLoader fxmlLoader = new FXMLLoader(resource);
+        fxmlLoader.setControllerFactory(injector::getInstance);
 
-            parent = FXMLLoader.load(resource);
+            Parent  parent = fxmlLoader.load();
 
             dashRoot.getChildren().clear();
             dashRoot.getChildren().add(parent);
@@ -44,9 +51,10 @@ public class DashboardController implements Initializable {
 
             assert resource != null;
 
-            Parent parent = null;
+            FXMLLoader fxmlLoader = new FXMLLoader(resource);
+            fxmlLoader.setControllerFactory(injector::getInstance);
 
-            parent = FXMLLoader.load(resource);
+            Parent parent = fxmlLoader.load();
 
             dashRoot.getChildren().clear();
             dashRoot.getChildren().add(parent);
@@ -63,9 +71,10 @@ public class DashboardController implements Initializable {
 
             assert resource != null;
 
-            Parent parent = null;
+            FXMLLoader fxmlLoader = new FXMLLoader(resource);
+            fxmlLoader.setControllerFactory(injector::getInstance);
 
-            parent = FXMLLoader.load(resource);
+            Parent   parent = fxmlLoader.load();
 
             dashRoot.getChildren().clear();
             dashRoot.getChildren().add(parent);
@@ -76,6 +85,7 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        injector = Guice.createInjector(new AppModule());
 
         try {
 
@@ -83,9 +93,10 @@ public class DashboardController implements Initializable {
 
             assert resource != null;
 
-            Parent parent = null;
+            FXMLLoader fxmlLoader = new FXMLLoader(resource);
+            fxmlLoader.setControllerFactory(injector::getInstance);
 
-            parent = FXMLLoader.load(resource);
+            Parent   parent = fxmlLoader.load() ;
 
             dashRoot.getChildren().clear();
             dashRoot.getChildren().add(parent);
