@@ -1,6 +1,7 @@
 package controller.item;
 
 import com.jfoenix.controls.JFXTextField;
+import jakarta.inject.Inject;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -56,7 +57,10 @@ public class ItemFormController implements Initializable {
     @FXML
     private JFXTextField txtUnitPrice;
 
-    ItemService serviceType=ServiceFactory.getInstance().getServiceType(ServiceType.ITEM);
+    @Inject
+    ItemService serviceType;
+
+  //  ItemService serviceType=ServiceFactory.getInstance().getServiceType(ServiceType.ITEM);
 
 
     @FXML
