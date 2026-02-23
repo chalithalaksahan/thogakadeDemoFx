@@ -12,7 +12,7 @@ public class Starter extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader  fxmlLoader = new FXMLLoader(getClass().getResource("view/dashboard.fxml"));
+        FXMLLoader  fxmlLoader = new FXMLLoader(getClass().getResource("/view/dashboard.fxml"));
 
         stage.setScene(new Scene(fxmlLoader.load()));
         stage.setTitle("Customer Form");
